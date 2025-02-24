@@ -11,5 +11,5 @@ export interface TextOverlay {
     rotation: Euler;
     depth: number;
     opacity: number;
-    outlineWidth: number; // New property for text outline
+    outlineWidth: number; // Property for text outline
 }

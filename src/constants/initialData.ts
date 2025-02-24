@@ -1,11 +1,9 @@
-// constants/initialData.ts
-
 import { Vector3, Euler } from 'three';
 import { TextOverlay } from '../types/types';
 
 export const INITIAL_OVERLAY: TextOverlay = {
   id: 'main-text',
-  position: new Vector3(0, 0.5, 0), // Adjusted Y position for vertical centering
+  position: new Vector3(0, 0, 0), // Changed to center position
   text: 'Groom\nweds\nBride', // Example with line breaks
   is3D: true,
   fontSize: 1,
