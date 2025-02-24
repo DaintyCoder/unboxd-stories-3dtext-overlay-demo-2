@@ -9,4 +9,6 @@ export interface TextOverlay {
     fontFamily: string;
     color: string;
     rotation: Euler;
+    depth: number;
+    opacity: number;
 }

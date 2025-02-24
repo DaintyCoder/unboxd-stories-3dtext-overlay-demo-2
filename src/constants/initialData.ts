@@ -11,5 +11,7 @@ export const INITIAL_OVERLAY: TextOverlay = {
   fontSize: 1,
   fontFamily: 'Helvetiker Regular',
   color: '#FFFC00',
-  rotation: new Euler(0, 0, 0)
+  rotation: new Euler(0, 0, 0),
+  depth: 0.2,
+  opacity: 1
 };

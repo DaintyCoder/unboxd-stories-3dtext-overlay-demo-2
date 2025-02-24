@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Html } from '@react-three/drei';
+import { Text3D, Html } from '@react-three/drei';
 import { TextOverlay } from '../types/types';
 
 interface Text3DOverlayProps {
@@ -20,6 +20,7 @@ export const Text3DOverlay: React.FC<Text3DOverlayProps> = ({ overlay, selected,
                         border: selected ? '2px solid #FFFC00' : 'none',
                         padding: '4px',
                         backgroundColor: selected ? 'rgba(0,0,0,0.5)' : 'transparent',
+                        opacity: overlay.opacity,
                     }}
                     onClick={onClick}
                 >
@@ -30,17 +31,26 @@ export const Text3DOverlay: React.FC<Text3DOverlayProps> = ({ overlay, selected,
     }
 
     return (
-        <Text
+        <Text3D
             position={overlay.position}
             rotation={overlay.rotation}
             onClick={onClick}
-            fontSize={overlay.fontSize}
-            color={overlay.color}
-            anchorX="center"
-            anchorY="middle"
-            characters="abcdefghijklmnopqrstuvwxyz"
+            font="/fonts/helvetiker_regular.typeface.json"
+            size={overlay.fontSize}
+            height={overlay.depth}
+            curveSegments={12}
+            bevelEnabled={overlay.depth > 0.1}
+            bevelThickness={overlay.depth * 0.1}
+            bevelSize={overlay.depth * 0.05}
+            bevelOffset={0}
+            bevelSegments={3}
         >
             {overlay.text}
-        </Text>
+            <meshStandardMaterial 
+                color={overlay.color} 
+                transparent={overlay.opacity < 1} 
+                opacity={overlay.opacity} 
+            />
+        </Text3D>
     );
 };
