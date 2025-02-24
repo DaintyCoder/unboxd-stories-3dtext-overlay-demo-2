@@ -91,6 +91,12 @@
   gap: 4px;
 }
 
+.text-input {
+  /* Change from input to textarea styles */
+  min-height: 80px;
+  resize: vertical;
+}
+
 .text-input, .color-input {
   width: 100%;
   padding: 8px;

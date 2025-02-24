@@ -9,10 +9,11 @@ interface Text3DOverlayProps {
     onClick: () => void;
 }
 
+// components/Text3DOverlay.tsx
 export const Text3DOverlay: React.FC<Text3DOverlayProps> = ({ overlay, selected, onClick }) => {
     if (!overlay.is3D) {
         return (
-            <Html position={overlay.position}>
+            <Html position={overlay.position} center>
                 <div
                     style={{
                         color: overlay.color,
@@ -22,6 +23,9 @@ export const Text3DOverlay: React.FC<Text3DOverlayProps> = ({ overlay, selected,
                         padding: '4px',
                         backgroundColor: selected ? 'rgba(0,0,0,0.5)' : 'transparent',
                         opacity: overlay.opacity,
+                        textAlign: 'center',
+                        whiteSpace: 'pre-line',
+                        transform: 'translate(-50%, -50%)'
                     }}
                     onClick={onClick}
                 >
@@ -31,52 +35,68 @@ export const Text3DOverlay: React.FC<Text3DOverlayProps> = ({ overlay, selected,
         );
     }
 
+    // Split text into lines and calculate vertical offset
+    const lines = overlay.text.split('\n');
+    const lineHeight = overlay.fontSize * 1.2;
+
     return (
         <group position={overlay.position} rotation={overlay.rotation} onClick={onClick}>
             {/* Main Text */}
-            <Text3D
-                font="/fonts/helvetiker_regular.typeface.json"
-                size={overlay.fontSize}
-                height={overlay.depth}
-                curveSegments={32}
-                bevelEnabled={overlay.depth > 0.1}
-                bevelThickness={overlay.depth * 0.1}
-                bevelSize={overlay.depth * 0.05}
-                bevelOffset={0}
-                bevelSegments={5}
-            >
-                {overlay.text}
-                <meshPhongMaterial 
-                    color={overlay.color}
-                    emissive={new THREE.Color(overlay.color).multiplyScalar(0.2)}
-                    shininess={30}
-                    transparent={overlay.opacity < 1} 
-                    opacity={overlay.opacity}
-                    specular={new THREE.Color(0xffffff)}
-                />
-            </Text3D>
+            <group position={[0, (lines.length - 1) * lineHeight / 2, 0]}>
+                {lines.map((line, index) => (
+                    <Text3D
+                        key={index}
+                        font="/fonts/helvetiker_regular.typeface.json"
+                        size={overlay.fontSize}
+                        height={overlay.depth}
+                        curveSegments={32}
+                        bevelEnabled={overlay.depth > 0.1}
+                        bevelThickness={overlay.depth * 0.1}
+                        bevelSize={overlay.depth * 0.05}
+                        bevelOffset={0}
+                        bevelSegments={5}
+                        position={[0, -index * lineHeight, 0]}
+                    >
+                        {line}
+                        <meshPhongMaterial 
+                            color={overlay.color}
+                            emissive={new THREE.Color(overlay.color).multiplyScalar(0.2)}
+                            shininess={30}
+                            transparent={overlay.opacity < 1} 
+                            opacity={overlay.opacity}
+                            specular={new THREE.Color(0xffffff)}
+                        />
+                    </Text3D>
+                ))}
+            </group>
 
             {/* Outline version (slightly larger) */}
             {overlay.outlineWidth > 0 && (
-                <Text3D
-                    font="/fonts/helvetiker_regular.typeface.json"
-                    size={overlay.fontSize + overlay.outlineWidth * 0.05}
-                    height={overlay.depth}
-                    curveSegments={32}
-                    bevelEnabled={overlay.depth > 0.1}
-                    bevelThickness={overlay.depth * 0.1}
-                    bevelSize={overlay.depth * 0.05}
-                    bevelOffset={0}
-                    bevelSegments={5}
-                >
-                    {overlay.text}
-                    <meshBasicMaterial 
-                        color="#000000"
-                        transparent={overlay.opacity < 1} 
-                        opacity={overlay.opacity}
-                        side={THREE.BackSide}
-                    />
-                </Text3D>
+                <group position={[0, (lines.length - 1) * lineHeight / 2, 0]}>
+                    {lines.map((line, index) => (
+                        <Text3D
+                            key={`outline-${index}`}
+                            font="/fonts/helvetiker_regular.typeface.json"
+                            size={overlay.fontSize + overlay.outlineWidth * 0.05}
+                            height={overlay.depth}
+                            curveSegments={32}
+                            bevelEnabled={overlay.depth > 0.1}
+                            bevelThickness={overlay.depth * 0.1}
+                            bevelSize={overlay.depth * 0.05}
+                            bevelOffset={0}
+                            bevelSegments={5}
+                            position={[0, -index * lineHeight, 0]}
+                        >
+                            {line}
+                            <meshBasicMaterial 
+                                color="#000000"
+                                transparent={overlay.opacity < 1} 
+                                opacity={overlay.opacity}
+                                side={THREE.BackSide}
+                            />
+                        </Text3D>
+                    ))}
+                </group>
             )}
         </group>
     );

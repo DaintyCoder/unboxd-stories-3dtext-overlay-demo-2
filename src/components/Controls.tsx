@@ -18,11 +18,12 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
       <div className="control-group">
         <label>
           Text:
-          <input
-            type="text"
+          <textarea
             value={overlay.text}
             onChange={e => onUpdate({ text: e.target.value })}
             className="text-input"
+            rows={3}
+            placeholder="Press Enter for new line"
           />
         </label>
       </div>
@@ -40,7 +41,7 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
           <span>{overlay.fontSize.toFixed(1)}</span>
         </label>
       </div>
-      
+
       {/* Color Selector */}
       <div className="control-group">
         <label>
@@ -53,7 +54,7 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
           />
         </label>
       </div>
-      
+
       {/* Opacity Control */}
       <div className="control-group">
         <label>
@@ -69,7 +70,7 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
           <span>{overlay.opacity.toFixed(1)}</span>
         </label>
       </div>
-      
+
       {/* Text Depth Control (only for 3D text) */}
       {overlay.is3D && (
         <div className="control-group">
@@ -87,7 +88,7 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
           </label>
         </div>
       )}
-      
+
       {/* Text Outline Control */}
       {overlay.is3D && (
         <div className="control-group">
@@ -105,7 +106,7 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
           </label>
         </div>
       )}
-      
+
       {/* Position Controls */}
       <div className="control-section">
         <h4>Position</h4>

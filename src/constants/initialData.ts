@@ -5,8 +5,8 @@ import { TextOverlay } from '../types/types';
 
 export const INITIAL_OVERLAY: TextOverlay = {
   id: 'main-text',
-  text: 'Groom weds Bride',
-  position: new Vector3(0, 0, 0),
+  position: new Vector3(0, 0.5, 0), // Adjusted Y position for vertical centering
+  text: 'Groom\nweds\nBride', // Example with line breaks
   is3D: true,
   fontSize: 1,
   fontFamily: 'Helvetiker Regular',
