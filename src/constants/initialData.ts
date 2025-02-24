@@ -13,5 +13,6 @@ export const INITIAL_OVERLAY: TextOverlay = {
   color: '#FFFC00',
   rotation: new Euler(0, 0, 0),
   depth: 0.2,
-  opacity: 1
+  opacity: 1,
+  outlineWidth: 0 // Default to no outline
 };

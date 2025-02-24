@@ -37,6 +37,7 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
             value={overlay.fontSize}
             onChange={e => onUpdate({ fontSize: parseFloat(e.target.value) })}
           />
+          <span>{overlay.fontSize.toFixed(1)}</span>
         </label>
       </div>
       
@@ -83,6 +84,24 @@ export const Controls: React.FC<ControlsProps> = ({ overlay, onUpdate, onClose }
               onChange={e => onUpdate({ depth: parseFloat(e.target.value) })}
             />
             <span>{overlay.depth.toFixed(1)}</span>
+          </label>
+        </div>
+      )}
+      
+      {/* Text Outline Control */}
+      {overlay.is3D && (
+        <div className="control-group">
+          <label>
+            Outline Width:
+            <input
+              type="range"
+              min="0"
+              max="5"
+              step="0.1"
+              value={overlay.outlineWidth}
+              onChange={e => onUpdate({ outlineWidth: parseFloat(e.target.value) })}
+            />
+            <span>{overlay.outlineWidth.toFixed(1)}</span>
           </label>
         </div>
       )}

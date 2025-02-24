@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text3D, Html } from '@react-three/drei';
 import { TextOverlay } from '../types/types';
+import * as THREE from 'three';
 
 interface Text3DOverlayProps {
     overlay: TextOverlay;
@@ -31,26 +32,52 @@ export const Text3DOverlay: React.FC<Text3DOverlayProps> = ({ overlay, selected,
     }
 
     return (
-        <Text3D
-            position={overlay.position}
-            rotation={overlay.rotation}
-            onClick={onClick}
-            font="/fonts/helvetiker_regular.typeface.json"
-            size={overlay.fontSize}
-            height={overlay.depth}
-            curveSegments={12}
-            bevelEnabled={overlay.depth > 0.1}
-            bevelThickness={overlay.depth * 0.1}
-            bevelSize={overlay.depth * 0.05}
-            bevelOffset={0}
-            bevelSegments={3}
-        >
-            {overlay.text}
-            <meshStandardMaterial 
-                color={overlay.color} 
-                transparent={overlay.opacity < 1} 
-                opacity={overlay.opacity} 
-            />
-        </Text3D>
+        <group position={overlay.position} rotation={overlay.rotation} onClick={onClick}>
+            {/* Main Text */}
+            <Text3D
+                font="/fonts/helvetiker_regular.typeface.json"
+                size={overlay.fontSize}
+                height={overlay.depth}
+                curveSegments={32}
+                bevelEnabled={overlay.depth > 0.1}
+                bevelThickness={overlay.depth * 0.1}
+                bevelSize={overlay.depth * 0.05}
+                bevelOffset={0}
+                bevelSegments={5}
+            >
+                {overlay.text}
+                <meshPhongMaterial 
+                    color={overlay.color}
+                    emissive={new THREE.Color(overlay.color).multiplyScalar(0.2)}
+                    shininess={30}
+                    transparent={overlay.opacity < 1} 
+                    opacity={overlay.opacity}
+                    specular={new THREE.Color(0xffffff)}
+                />
+            </Text3D>
+
+            {/* Outline version (slightly larger) */}
+            {overlay.outlineWidth > 0 && (
+                <Text3D
+                    font="/fonts/helvetiker_regular.typeface.json"
+                    size={overlay.fontSize + overlay.outlineWidth * 0.05}
+                    height={overlay.depth}
+                    curveSegments={32}
+                    bevelEnabled={overlay.depth > 0.1}
+                    bevelThickness={overlay.depth * 0.1}
+                    bevelSize={overlay.depth * 0.05}
+                    bevelOffset={0}
+                    bevelSegments={5}
+                >
+                    {overlay.text}
+                    <meshBasicMaterial 
+                        color="#000000"
+                        transparent={overlay.opacity < 1} 
+                        opacity={overlay.opacity}
+                        side={THREE.BackSide}
+                    />
+                </Text3D>
+            )}
+        </group>
     );
 };
