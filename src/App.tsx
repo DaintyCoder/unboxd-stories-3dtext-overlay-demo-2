@@ -1,5 +1,3 @@
-// App.tsx
-
 import React, { useState, useCallback, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
@@ -33,32 +31,30 @@ const App: React.FC = () => {
         {!mediaUrl ? (
           <MediaUpload onFileUpload={handleFileUpload} />
         ) : (
-          <>
-            <div className="media-frame">
-              <img src={mediaUrl} alt="uploaded media" className="media" />
-              <Canvas className="canvas-overlay">
-                <Suspense fallback={null}>
-                  <ambientLight intensity={0.5} />
-                  <pointLight position={[10, 10, 10]} />
-                  <OrbitControls enabled={isEditing} />
-                  <Text3DOverlay
-                    overlay={overlay}
-                    selected={isEditing}
-                    onClick={() => setIsEditing(true)}
-                  />
-                </Suspense>
-              </Canvas>
-            </div>
-          </>
+          <div className="media-frame">
+            <img src={mediaUrl} alt="uploaded media" className="media" />
+            <Canvas className="canvas-overlay">
+              <Suspense fallback={null}>
+                <ambientLight intensity={0.5} />
+                <pointLight position={[10, 10, 10]} />
+                <OrbitControls enabled={isEditing} />
+                <Text3DOverlay
+                  overlay={overlay}
+                  selected={isEditing}
+                  onClick={() => setIsEditing(true)}
+                />
+              </Suspense>
+            </Canvas>
+            {isEditing && (
+              <Controls
+                overlay={overlay}
+                onUpdate={updateOverlay}
+                onClose={() => setIsEditing(false)}
+              />
+            )}
+          </div>
         )}
       </div>
-      {isEditing && (
-        <Controls
-          overlay={overlay}
-          onUpdate={updateOverlay}
-          onClose={() => setIsEditing(false)}
-        />
-      )}
     </div>
   );
 };
